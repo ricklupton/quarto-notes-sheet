@@ -48,3 +48,8 @@ A last slide, with notes again.
 ::: {.notes}
 Section slides (`# Heading`) become headings on the sheet.
 :::
+
+# Summary
+
+- A section slide with content on it is a heading on the sheet and a slide
+  under it.

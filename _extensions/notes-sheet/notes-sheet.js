@@ -25,6 +25,7 @@
   one, scaled down, beside the slide's notes:
 
     * each Quarto section slide (`# Heading`) becomes a heading on the sheet,
+      and a slide below it too if it has anything else on it or has notes,
     * a slide with notes gets a row: thumbnail, then the notes, and
     * a run of slides without notes is packed into one strip of thumbnails.
 
@@ -153,6 +154,14 @@ window.RevealNotesSheet = function () {
     return e;
   }
 
+  // Whether a section slide has more on it than its heading, such as a
+  // `# Summary` with a list under it.
+  function hasContent(section) {
+    return Array.prototype.some.call(section.children, function (child) {
+      return !/^H[1-6]$/.test(child.tagName) && !child.matches("aside.notes");
+    });
+  }
+
   function textOf(root, selector) {
     return Array.prototype.map.call(root.querySelectorAll(selector),
       function (e) { return e.textContent.trim(); }).join(", ");
@@ -239,7 +248,7 @@ window.RevealNotesSheet = function () {
         var h2 = el("h2", "ns-heading", heading && heading.textContent.trim());
         sheet.appendChild(h2);
         places[section.id] = places[n] = h2;
-        if (!hasNotes) return;
+        if (!hasNotes && !hasContent(section)) return;
       }
       if (hasNotes || !opts.strips) {
         flushPending();

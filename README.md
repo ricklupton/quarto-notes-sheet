@@ -3,8 +3,8 @@
 This Quarto extension gives a reveal.js deck a **notes view**: each slide's
 notes beside a small picture of the slide, in a printable layout.
 
-Section slides become headings. Slides with no notes can be packed onto the same
-row to save space.
+Section slides become headings, and slides too if they have content or notes.
+Slides with no notes can be packed onto the same row to save space.
 
 ## Installing
 
