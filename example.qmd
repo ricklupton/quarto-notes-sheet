@@ -1,0 +1,50 @@
+---
+title: "Notes sheet example"
+subtitle: "A short set of slides with speaker notes"
+author: "Rick Lupton"
+format:
+  revealjs:
+    slide-number: true
+    footer: "Notes sheet example · [Notes view](?view=notes)"
+    html-math-method: katex
+revealjs-plugins:
+  - notes-sheet
+---
+
+## A slide with notes
+
+- The audience sees this
+- [And this, after a click]{.fragment}
+
+::: {.fragment}
+Fragments are all shown in the thumbnail.
+:::
+
+::: {.notes}
+**Start here.** The notes can hold anything Markdown can:
+
+a) a lettered list,
+b) *emphasis*, `code` and maths, like $E[X] = \sum_i x_i\, p_i$,
+
+- and bullets.
+
+$$ P(\ge 1 \text{ six}) = 1 - (5/6)^4 = 0.518 $$
+:::
+
+## A slide without notes
+
+Slides without notes can wrap onto a single line.
+
+## Another one
+
+Like this one.
+
+# A section
+
+## Back to notes
+
+A last slide, with notes again.
+
+::: {.notes}
+Section slides (`# Heading`) become headings on the sheet.
+:::

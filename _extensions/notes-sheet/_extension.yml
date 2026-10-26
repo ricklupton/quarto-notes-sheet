@@ -1,0 +1,14 @@
+title: Notes sheet
+author: Rick Lupton
+version: 1.0.0
+quarto-required: ">=1.5.0"
+contributes:
+  revealjs-plugins:
+    - name: RevealNotesSheet
+      script: notes-sheet.js
+      stylesheet: notes-sheet.css
+      # The deck opens in its notes view if this is true, or a map of options
+      # without `enabled: false`; otherwise the notes view is a key press, a
+      # menu entry or `?view=notes` away.  See notes-sheet.js.
+      config:
+        notes-sheet: false

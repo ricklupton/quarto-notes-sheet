@@ -1,0 +1,240 @@
+/*
+  Layout for the speaker notes sheet (see notes-sheet.js).
+
+  This stylesheet is loaded by every deck that includes the plugin, so every
+  rule is behind `html.notes-sheet`, which the plugin sets only when the
+  sheet is turned on.  The page size is set from the script, since @page
+  cannot be made conditional on a class.
+
+  The aim is a page that reads as notes first: ragged-right text beside a
+  small thumbnail, no rules, and the slide number kept faint enough not to
+  compete with the notes.
+*/
+
+html.notes-sheet {
+  --ns-thumb-w: 5.4cm;
+  --ns-grey: rgb(110, 110, 110);
+  --ns-faint: rgb(185, 185, 185);
+}
+
+/* Until the sheet is built, show nothing rather than the print view. */
+html.notes-sheet:not(.ns-built) body > .reveal {
+  visibility: hidden;
+}
+
+html.notes-sheet.ns-built body > .reveal:not(.ns-slide) {
+  display: none !important;
+}
+
+html.notes-sheet.ns-built body {
+  background: rgb(232, 232, 232);
+}
+
+html.notes-sheet .ns-sheet {
+  box-sizing: border-box;
+  max-width: 21cm;
+  margin: 1.5rem auto;
+  padding: 1.6cm 1.8cm;
+  background: white;
+  color: black;
+  font-family: var(--r-main-font, sans-serif);
+  font-size: 11pt;
+  line-height: 1.35;
+  text-align: left;
+}
+
+/* The page margins come from @page, set by the script; the left one is
+   mostly this padding, so the slide numbers can hang in it. */
+@media print {
+  html.notes-sheet.ns-built body {
+    background: white;
+  }
+  html.notes-sheet .ns-sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0 0 0 1.2cm;
+  }
+}
+
+html.notes-sheet .ns-title {
+  margin: 0 0 1.8em;
+}
+
+html.notes-sheet .ns-title h1 {
+  margin: 0 0 2pt;
+  font-size: 15pt;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+html.notes-sheet .ns-title p {
+  margin: 0;
+  font-size: 8.5pt;
+  color: var(--ns-grey);
+}
+
+html.notes-sheet .ns-heading {
+  margin: 2em 0 0.9em;
+  font-size: 1.15em;
+  font-weight: bold;
+  break-after: avoid;
+}
+
+/* One slide with notes.  The notes are nudged down so their first line
+   looks aligned with the top of the frame rather than poking above it.
+   The row may break across pages when the notes are long. */
+html.notes-sheet .ns-row,
+html.notes-sheet .ns-strip {
+  position: relative;
+  margin-bottom: 1.9em;
+}
+
+html.notes-sheet .ns-row {
+  display: grid;
+  grid-template-columns: var(--ns-thumb-w) minmax(0, 1fr);
+  column-gap: 1em;
+}
+
+/* With `notes: below`, the notes run the full width under the picture. */
+html.notes-sheet .ns-notes-below .ns-row {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.4em;
+}
+
+/* A run of slides with no notes, as many thumbnails to a line as fit. */
+html.notes-sheet .ns-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--ns-thumb-w));
+  column-gap: 0.55cm;
+  row-gap: 1.1em;
+}
+
+/* The slide number, hung in the left margin level with the frame. */
+html.notes-sheet .ns-number {
+  position: absolute;
+  left: -1.15cm;
+  top: 2pt;
+  width: 0.9cm;
+  text-align: right;
+  font-size: 9pt;
+  color: var(--ns-grey);
+}
+
+/* The frame, because most slides have white backgrounds. */
+html.notes-sheet .ns-thumb {
+  break-inside: avoid;
+  width: var(--ns-thumb-w);
+  overflow: hidden;
+  border: 0.5pt solid rgb(175, 175, 175);
+  box-sizing: border-box;
+}
+
+/* Shrunk with `zoom` rather than a transform, so the slide really takes up
+   only the frame's room: a transformed one keeps its full size for layout,
+   and when printing, Chrome shrinks the whole page to fit anything that
+   overflows it -- here to two-thirds size. */
+html.notes-sheet .ns-scale {
+  overflow: hidden;
+}
+
+/* Each thumbnail is its own little deck, so the theme's `.reveal ...`
+   rules, and reveal's own print-view rules, still apply to it. */
+html.notes-sheet .reveal.ns-slide .slides .pdf-page {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+html.notes-sheet .ns-slide .slide-number-pdf,
+html.notes-sheet .ns-slide .speaker-notes-pdf,
+html.notes-sheet .ns-slide aside.notes {
+  display: none !important;
+}
+
+html.notes-sheet .ns-notes {
+  padding-top: 5pt;
+}
+
+html.notes-sheet .ns-notes > :first-child {
+  margin-top: 0;
+}
+
+html.notes-sheet .ns-notes > :last-child {
+  margin-bottom: 0;
+}
+
+html.notes-sheet .ns-notes p,
+html.notes-sheet .ns-notes ul,
+html.notes-sheet .ns-notes ol {
+  margin: 0 0 0.6em;
+}
+
+html.notes-sheet .ns-notes ul,
+html.notes-sheet .ns-notes ol {
+  padding-left: 1.3em;
+}
+
+html.notes-sheet .ns-notes hr {
+  border: 0;
+  border-top: 0.5pt solid var(--ns-faint);
+  margin: 0.8em 0;
+}
+
+/* reveal.js loads a CSS reset that takes the look away from every element
+   on the page, so what the notes use has to be given back. */
+html.notes-sheet .ns-notes strong,
+html.notes-sheet .ns-notes b,
+html.notes-sheet .ns-notes h3,
+html.notes-sheet .ns-notes h4 {
+  font-weight: bold;
+}
+
+html.notes-sheet .ns-notes em,
+html.notes-sheet .ns-notes i {
+  font-style: italic;
+}
+
+html.notes-sheet .ns-notes sub,
+html.notes-sheet .ns-notes sup {
+  font-size: 0.75em;
+}
+
+html.notes-sheet .ns-notes sub {
+  vertical-align: sub;
+}
+
+html.notes-sheet .ns-notes sup {
+  vertical-align: super;
+}
+
+html.notes-sheet .ns-notes code {
+  font-family: var(--r-code-font, monospace);
+  font-size: 0.92em;
+}
+
+html.notes-sheet .ns-notes a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+html.notes-sheet .ns-notes blockquote {
+  margin: 0 0 0.6em;
+  padding-left: 0.8em;
+  border-left: 2pt solid var(--ns-faint);
+}
+
+html.notes-sheet .ns-notes img {
+  max-width: 100%;
+}
+
+/* Maths at the size of the text around it, rather than KaTeX's larger
+   default; and an equation still too wide for the column is cut off rather
+   than overflowing, which would print the whole sheet small (see
+   .ns-scale). */
+html.notes-sheet .ns-notes .katex {
+  font-size: 1.05em;
+}
+
+html.notes-sheet .ns-notes .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
